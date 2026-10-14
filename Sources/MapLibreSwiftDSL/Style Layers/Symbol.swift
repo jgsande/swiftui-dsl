@@ -1,33 +1,10 @@
 import Foundation
 import InternalUtils
 import MapLibre
-import MapLibreSwiftMacros
 
 /// A MapLibre symbol.
 ///
 /// An enum would probably be better for iconAnchor and textAnchor?
-@MLNStyleProperty<Double>("iconRotation", supportsInterpolation: true)
-@MLNStyleProperty<UIColor>("iconColor", supportsInterpolation: true)
-@MLNStyleProperty<Bool>("iconAllowsOverlap", supportsInterpolation: false)
-@MLNStyleProperty<CGVector>("iconOffset", supportsInterpolation: true)
-@MLNStyleProperty<String>("iconAnchor", supportsInterpolation: false)
-
-@MLNStyleProperty<UIColor>("textColor", supportsInterpolation: true)
-@MLNStyleProperty<Double>("textFontSize", supportsInterpolation: true)
-@MLNStyleProperty<String>("text", supportsInterpolation: false)
-@MLNStyleProperty<[String]>("textFontNames", supportsInterpolation: false)
-@MLNStyleProperty<String>("textAnchor", supportsInterpolation: false)
-@MLNStyleProperty<CGVector>("textOffset", supportsInterpolation: true)
-@MLNStyleProperty<Double>("maximumTextWidth", supportsInterpolation: true)
-@MLNStyleProperty<Bool>("textAllowsOverlap", supportsInterpolation: false)
-
-@MLNStyleProperty<UIColor>("textHaloColor", supportsInterpolation: true)
-@MLNStyleProperty<Double>("textHaloWidth", supportsInterpolation: true)
-@MLNStyleProperty<Double>("textHaloBlur", supportsInterpolation: true)
-
-@MLNStyleProperty<String>("symbolPlacement", supportsInterpolation: false)
-@MLNStyleProperty<Double>("symbolSpacing", supportsInterpolation: true)
-
 public struct SymbolStyleLayer: SourceBoundVectorStyleLayerDefinition {
     public let identifier: String
     public let sourceLayerIdentifier: String?
@@ -109,6 +86,542 @@ public struct SymbolStyleLayer: SourceBoundVectorStyleLayerDefinition {
             )
             it.iconImages = mappings.values + [defaultImage]
         }
+    }
+
+    fileprivate var iconRotation: NSExpression? = nil
+
+    public func iconRotation(_ value: Double) -> Self {
+        var copy = self
+        copy.iconRotation = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func iconRotation(expression: NSExpression) -> Self {
+        var copy = self
+        copy.iconRotation = expression
+        return copy
+    }
+
+    public func iconRotation(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.iconRotation = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func iconRotation(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.iconRotation = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var iconColor: NSExpression? = nil
+
+    public func iconColor(_ value: UIColor) -> Self {
+        var copy = self
+        copy.iconColor = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func iconColor(expression: NSExpression) -> Self {
+        var copy = self
+        copy.iconColor = expression
+        return copy
+    }
+
+    public func iconColor(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.iconColor = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func iconColor(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.iconColor = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var iconAllowsOverlap: NSExpression? = nil
+
+    public func iconAllowsOverlap(_ value: Bool) -> Self {
+        var copy = self
+        copy.iconAllowsOverlap = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func iconAllowsOverlap(expression: NSExpression) -> Self {
+        var copy = self
+        copy.iconAllowsOverlap = expression
+        return copy
+    }
+
+    public func iconAllowsOverlap(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.iconAllowsOverlap = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    fileprivate var iconOffset: NSExpression? = nil
+
+    public func iconOffset(_ value: CGVector) -> Self {
+        var copy = self
+        copy.iconOffset = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func iconOffset(expression: NSExpression) -> Self {
+        var copy = self
+        copy.iconOffset = expression
+        return copy
+    }
+
+    public func iconOffset(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.iconOffset = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func iconOffset(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.iconOffset = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var iconAnchor: NSExpression? = nil
+
+    public func iconAnchor(_ value: String) -> Self {
+        var copy = self
+        copy.iconAnchor = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func iconAnchor(expression: NSExpression) -> Self {
+        var copy = self
+        copy.iconAnchor = expression
+        return copy
+    }
+
+    public func iconAnchor(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.iconAnchor = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    fileprivate var textColor: NSExpression? = nil
+
+    public func textColor(_ value: UIColor) -> Self {
+        var copy = self
+        copy.textColor = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textColor(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textColor = expression
+        return copy
+    }
+
+    public func textColor(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textColor = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func textColor(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.textColor = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var textFontSize: NSExpression? = nil
+
+    public func textFontSize(_ value: Double) -> Self {
+        var copy = self
+        copy.textFontSize = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textFontSize(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textFontSize = expression
+        return copy
+    }
+
+    public func textFontSize(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textFontSize = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func textFontSize(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.textFontSize = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var text: NSExpression? = nil
+
+    public func text(_ value: String) -> Self {
+        var copy = self
+        copy.text = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func text(expression: NSExpression) -> Self {
+        var copy = self
+        copy.text = expression
+        return copy
+    }
+
+    public func text(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.text = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    fileprivate var textFontNames: NSExpression? = nil
+
+    public func textFontNames(_ value: [String]) -> Self {
+        var copy = self
+        copy.textFontNames = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textFontNames(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textFontNames = expression
+        return copy
+    }
+
+    public func textFontNames(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textFontNames = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    fileprivate var textAnchor: NSExpression? = nil
+
+    public func textAnchor(_ value: String) -> Self {
+        var copy = self
+        copy.textAnchor = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textAnchor(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textAnchor = expression
+        return copy
+    }
+
+    public func textAnchor(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textAnchor = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    fileprivate var textOffset: NSExpression? = nil
+
+    public func textOffset(_ value: CGVector) -> Self {
+        var copy = self
+        copy.textOffset = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textOffset(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textOffset = expression
+        return copy
+    }
+
+    public func textOffset(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textOffset = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func textOffset(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.textOffset = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var maximumTextWidth: NSExpression? = nil
+
+    public func maximumTextWidth(_ value: Double) -> Self {
+        var copy = self
+        copy.maximumTextWidth = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func maximumTextWidth(expression: NSExpression) -> Self {
+        var copy = self
+        copy.maximumTextWidth = expression
+        return copy
+    }
+
+    public func maximumTextWidth(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.maximumTextWidth = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func maximumTextWidth(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.maximumTextWidth = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var textAllowsOverlap: NSExpression? = nil
+
+    public func textAllowsOverlap(_ value: Bool) -> Self {
+        var copy = self
+        copy.textAllowsOverlap = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textAllowsOverlap(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textAllowsOverlap = expression
+        return copy
+    }
+
+    public func textAllowsOverlap(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textAllowsOverlap = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    fileprivate var textHaloColor: NSExpression? = nil
+
+    public func textHaloColor(_ value: UIColor) -> Self {
+        var copy = self
+        copy.textHaloColor = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textHaloColor(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textHaloColor = expression
+        return copy
+    }
+
+    public func textHaloColor(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textHaloColor = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func textHaloColor(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.textHaloColor = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var textHaloWidth: NSExpression? = nil
+
+    public func textHaloWidth(_ value: Double) -> Self {
+        var copy = self
+        copy.textHaloWidth = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textHaloWidth(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textHaloWidth = expression
+        return copy
+    }
+
+    public func textHaloWidth(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textHaloWidth = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func textHaloWidth(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.textHaloWidth = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var textHaloBlur: NSExpression? = nil
+
+    public func textHaloBlur(_ value: Double) -> Self {
+        var copy = self
+        copy.textHaloBlur = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func textHaloBlur(expression: NSExpression) -> Self {
+        var copy = self
+        copy.textHaloBlur = expression
+        return copy
+    }
+
+    public func textHaloBlur(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.textHaloBlur = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func textHaloBlur(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.textHaloBlur = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var symbolPlacement: NSExpression? = nil
+
+    public func symbolPlacement(_ value: String) -> Self {
+        var copy = self
+        copy.symbolPlacement = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func symbolPlacement(expression: NSExpression) -> Self {
+        var copy = self
+        copy.symbolPlacement = expression
+        return copy
+    }
+
+    public func symbolPlacement(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.symbolPlacement = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    fileprivate var symbolSpacing: NSExpression? = nil
+
+    public func symbolSpacing(_ value: Double) -> Self {
+        var copy = self
+        copy.symbolSpacing = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func symbolSpacing(expression: NSExpression) -> Self {
+        var copy = self
+        copy.symbolSpacing = expression
+        return copy
+    }
+
+    public func symbolSpacing(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.symbolSpacing = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func symbolSpacing(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.symbolSpacing = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
     }
 }
 

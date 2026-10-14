@@ -1,12 +1,8 @@
 import Foundation
 import InternalUtils
 import MapLibre
-import MapLibreSwiftMacros
 
 // TODO: Other properties and their modifiers
-@MLNStyleProperty<UIColor>("fillColor", supportsInterpolation: true)
-@MLNStyleProperty<UIColor>("fillOutlineColor", supportsInterpolation: true)
-@MLNStyleProperty<Float>("fillOpacity", supportsInterpolation: true)
 public struct FillStyleLayer: SourceBoundVectorStyleLayerDefinition {
     public let identifier: String
     public let sourceLayerIdentifier: String?
@@ -34,6 +30,114 @@ public struct FillStyleLayer: SourceBoundVectorStyleLayerDefinition {
         let styleSource = addSource(to: style)
 
         return FillStyleLayerInternal(definition: self, mglSource: styleSource)
+    }
+
+    fileprivate var fillColor: NSExpression? = nil
+
+    public func fillColor(_ value: UIColor) -> Self {
+        var copy = self
+        copy.fillColor = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func fillColor(expression: NSExpression) -> Self {
+        var copy = self
+        copy.fillColor = expression
+        return copy
+    }
+
+    public func fillColor(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.fillColor = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func fillColor(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.fillColor = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var fillOutlineColor: NSExpression? = nil
+
+    public func fillOutlineColor(_ value: UIColor) -> Self {
+        var copy = self
+        copy.fillOutlineColor = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func fillOutlineColor(expression: NSExpression) -> Self {
+        var copy = self
+        copy.fillOutlineColor = expression
+        return copy
+    }
+
+    public func fillOutlineColor(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.fillOutlineColor = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func fillOutlineColor(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.fillOutlineColor = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
+    }
+
+    fileprivate var fillOpacity: NSExpression? = nil
+
+    public func fillOpacity(_ value: Float) -> Self {
+        var copy = self
+        copy.fillOpacity = NSExpression(forConstantValue: value)
+        return copy
+    }
+
+    public func fillOpacity(expression: NSExpression) -> Self {
+        var copy = self
+        copy.fillOpacity = expression
+        return copy
+    }
+
+    public func fillOpacity(featurePropertyNamed keyPath: String) -> Self {
+        var copy = self
+        copy.fillOpacity = NSExpression(forKeyPath: keyPath)
+        return copy
+    }
+
+    public func fillOpacity(
+        interpolatedBy expression: MLNVariableExpression,
+        curveType: MLNExpressionInterpolationMode,
+        parameters: NSExpression?,
+        stops: NSExpression
+    ) -> Self {
+        var copy = self
+        copy.fillOpacity = interpolatingExpression(
+            expression: expression,
+            curveType: curveType,
+            parameters: parameters,
+            stops: stops
+        )
+        return copy
     }
 }
 

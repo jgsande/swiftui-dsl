@@ -1,7 +1,6 @@
 // swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-import CompilerPluginSupport
 import PackageDescription
 
 let enableDeveloperTools = false
@@ -26,10 +25,6 @@ let package = Package(
             name: "MapLibreSwiftDSL",
             targets: ["MapLibreSwiftDSL"]
         ),
-        .library(
-            name: "MapLibreSwiftMacros",
-            targets: ["MapLibreSwiftMacros"]
-        ),
     ],
     traits: [
         .default(enabledTraits: defaultTraits),
@@ -37,14 +32,10 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", from: "6.21.2"),
-        // Macros
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", "509.0.0" ..< "603.0.0"),
         // Testing
         .package(url: "https://github.com/apple/swift-numerics.git", from: "1.1.1"),
         .package(url: "https://github.com/Kolos65/Mockable.git", from: "0.5.1"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.7"),
-        // Macro Testing
-        .package(url: "https://github.com/pointfreeco/swift-macro-testing", .upToNextMinor(from: "0.6.4")),
     ],
     targets: [
         .target(
@@ -65,7 +56,6 @@ let package = Package(
             dependencies: [
                 .target(name: "InternalUtils"),
                 .product(name: "MapLibre", package: "maplibre-gl-native-distribution"),
-                "MapLibreSwiftMacros",
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency"),
@@ -80,19 +70,6 @@ let package = Package(
                 .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
-
-        // MARK: Macro
-
-        .macro(
-            name: "MapLibreSwiftMacrosImpl",
-            dependencies: [
-                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
-            ]
-        ),
-
-        // Library that exposes a macro as part of its API, which is used in client programs.
-        .target(name: "MapLibreSwiftMacros", dependencies: ["MapLibreSwiftMacrosImpl"]),
 
         // MARK: Tests
 
@@ -110,17 +87,6 @@ let package = Package(
             name: "MapLibreSwiftDSLTests",
             dependencies: [
                 "MapLibreSwiftDSL",
-            ]
-        ),
-
-        // MARK: Macro Tests
-
-        .testTarget(
-            name: "MapLibreSwiftMacrosTests",
-            dependencies: [
-                "MapLibreSwiftMacrosImpl",
-                .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
-                .product(name: "MacroTesting", package: "swift-macro-testing"),
             ]
         ),
     ],

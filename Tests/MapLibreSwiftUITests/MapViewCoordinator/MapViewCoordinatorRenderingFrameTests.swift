@@ -19,6 +19,9 @@ final class MapViewCoordinatorRenderingFrameTests: XCTestCase {
 
         coordinator.mapViewDidFinishRenderingFrame(mapView, fullyRendered: false)
         coordinator.mapViewDidFinishRenderingFrame(mapView, fullyRendered: true)
+        let drained = expectation(description: "the main queue ran what was queued before it")
+        DispatchQueue.main.async { drained.fulfill() }
+        wait(for: [drained], timeout: 2)
 
         XCTAssertEqual(received, [false, true])
     }

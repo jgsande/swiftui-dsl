@@ -57,8 +57,9 @@ public extension View {
     /// cancellation, with the tile's coordinates and its source.
     ///
     /// Unlike ``onMapTileError(_:)``, nothing is debounced or dropped, so a host can follow each tile from its
-    /// request to its parse and tell when every tile of the current view has loaded. The action runs on the main
-    /// actor, once per operation, so keep it light.
+    /// request to its parse and tell when every tile of the current view has loaded. MapLibre reports tile operations
+    /// from its own threads: the action runs on the main actor, once per operation and in their order, so keep it
+    /// light.
     ///
     /// ```swift
     /// MapView(...)

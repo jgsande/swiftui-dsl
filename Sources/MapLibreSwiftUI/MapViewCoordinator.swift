@@ -450,15 +450,18 @@ MLNMapViewDelegate {
 
     /// Called by MapLibre for every tile lifecycle event.
     ///
-    /// Every event goes to ``onMapTileOperation``, as it arrives.
+    /// MapLibre calls this from its own worker threads, so the event moves to
+    /// the main queue before anything else: there the coordinator's state is
+    /// safe to touch, and the events stay in the order they came in.
+    ///
+    /// Every event goes to ``onMapTileOperation``.
     ///
     /// ``MLNTileOperation/error`` also goes to ``onMapTileError``: it
     /// indicates a tile request failed, typically due to no internet or a
     /// poor connection. That callback is debounced to 3ms, a burst of
     /// simultaneously failing tiles within the window produces a single
     /// notification rather than many.
-    @MainActor
-    public func mapView(
+    public nonisolated func mapView(
         _: MLNMapView,
         tileDidTriggerAction operation: MLNTileOperation,
         x: Int,
@@ -468,10 +471,21 @@ MLNMapViewDelegate {
         overscaledZ: Int,
         sourceID: String
     ) {
-        onMapTileOperation?(MapTileOperation(
+        let tile = MapTileOperation(
             operation: operation, x: x, y: y, z: z, wrap: wrap, overscaledZ: overscaledZ, sourceID: sourceID
-        ))
-        guard operation == .error else { return }
+        )
+        DispatchQueue.main.async { [weak self] in
+            MainActor.assumeIsolated {
+                self?.tileDidTriggerAction(tile)
+            }
+        }
+    }
+
+    /// A tile lifecycle event, on the main actor.
+    @MainActor
+    private func tileDidTriggerAction(_ tile: MapTileOperation) {
+        onMapTileOperation?(tile)
+        guard tile.operation == .error else { return }
         tileErrorDebounceTask?.cancel()
         tileErrorDebounceTask = Task { @MainActor in
             try? await Task.sleep(nanoseconds: 300_000_000)
@@ -519,9 +533,15 @@ MLNMapViewDelegate {
     }
 
     /// Called by MapLibre each time it draws a frame. `fullyRendered` is `false` while the frame still awaits data.
-    @MainActor
-    public func mapViewDidFinishRenderingFrame(_: MLNMapView, fullyRendered: Bool) {
-        onMapDidFinishRenderingFrame?(fullyRendered)
+    ///
+    /// The report moves to the main queue, as a tile event does, so a host
+    /// that follows both sees them in the order they came in.
+    public nonisolated func mapViewDidFinishRenderingFrame(_: MLNMapView, fullyRendered: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            MainActor.assumeIsolated {
+                self?.onMapDidFinishRenderingFrame?(fullyRendered)
+            }
+        }
     }
 
     @MainActor

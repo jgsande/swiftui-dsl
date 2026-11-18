@@ -50,6 +50,7 @@ MLNMapViewDelegate {
     var onMapIdle: ((MapViewProxy) -> Void)?
     var onMapDidFinishRendering: ((MapViewProxy, Bool) -> Void)?
     var onMapTileError: (() -> Void)?
+    var onMapTileOperation: ((MapTileOperation) -> Void)?
     var onGesture: (MLNMapView, UIGestureRecognizer) -> Void
     var onViewProxyChanged: (MapViewProxy) -> Void
     var proxyUpdateMode: ProxyUpdateMode
@@ -448,23 +449,27 @@ MLNMapViewDelegate {
 
     /// Called by MapLibre for every tile lifecycle event.
     ///
-    /// Only ``MLNTileOperation/error`` is acted on, it indicates a tile
-    /// request failed, typically due to no internet or a poor connection.
+    /// Every event goes to ``onMapTileOperation``, as it arrives.
     ///
-    /// The callback is debounced to 3ms, a burst of simultaneously
-    /// failing tiles within the window produces a single notification
-    /// rather than many.
+    /// ``MLNTileOperation/error`` also goes to ``onMapTileError``: it
+    /// indicates a tile request failed, typically due to no internet or a
+    /// poor connection. That callback is debounced to 3ms, a burst of
+    /// simultaneously failing tiles within the window produces a single
+    /// notification rather than many.
     @MainActor
     public func mapView(
         _: MLNMapView,
         tileDidTriggerAction operation: MLNTileOperation,
-        x _: Int,
-        y _: Int,
-        z _: Int,
-        wrap _: Int,
-        overscaledZ _: Int,
-        sourceID _: String
+        x: Int,
+        y: Int,
+        z: Int,
+        wrap: Int,
+        overscaledZ: Int,
+        sourceID: String
     ) {
+        onMapTileOperation?(MapTileOperation(
+            operation: operation, x: x, y: y, z: z, wrap: wrap, overscaledZ: overscaledZ, sourceID: sourceID
+        ))
         guard operation == .error else { return }
         tileErrorDebounceTask?.cancel()
         tileErrorDebounceTask = Task { @MainActor in

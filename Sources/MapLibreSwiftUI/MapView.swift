@@ -35,6 +35,7 @@ public struct MapView<T: MapViewHostViewController>: UIViewControllerRepresentab
     @Environment(\.onMapIdle) var onMapIdle
     @Environment(\.onMapDidFinishRendering) var onMapDidFinishRendering
     @Environment(\.onMapTileError) var onMapTileError
+    @Environment(\.onMapTileOperation) var onMapTileOperation
     @Environment(\.mapProxyUpdateMode) var proxyUpdateMode
     @Environment(\.onMapProxyUpdated) var onViewProxyChanged
     @Environment(\.onMapGestures) var gestureManager
@@ -112,6 +113,7 @@ public struct MapView<T: MapViewHostViewController>: UIViewControllerRepresentab
         context.coordinator.onMapIdle = onMapIdle
         context.coordinator.onMapDidFinishRendering = onMapDidFinishRendering
         context.coordinator.onMapTileError = onMapTileError
+        context.coordinator.onMapTileOperation = onMapTileOperation
         return controller
     }
 
@@ -146,6 +148,7 @@ public struct MapView<T: MapViewHostViewController>: UIViewControllerRepresentab
         context.coordinator.onMapIdle = onMapIdle
         context.coordinator.onMapDidFinishRendering = onMapDidFinishRendering
         context.coordinator.onMapTileError = onMapTileError
+        context.coordinator.onMapTileOperation = onMapTileOperation
 
         // FIXME: This isn't exactly telling us if the *map* is loaded, and the docs for setCenter say it needs to be.
         let isStyleLoaded = uiViewController.mapView.style != nil

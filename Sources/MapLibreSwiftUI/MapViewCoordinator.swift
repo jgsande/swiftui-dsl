@@ -51,6 +51,7 @@ MLNMapViewDelegate {
     var onMapDidFinishRendering: ((MapViewProxy, Bool) -> Void)?
     var onMapTileError: (() -> Void)?
     var onMapTileOperation: ((MapTileOperation) -> Void)?
+    var onMapDidFinishRenderingFrame: ((Bool) -> Void)?
     var onGesture: (MLNMapView, UIGestureRecognizer) -> Void
     var onViewProxyChanged: (MapViewProxy) -> Void
     var proxyUpdateMode: ProxyUpdateMode
@@ -515,6 +516,12 @@ MLNMapViewDelegate {
             lastReasonForChange: nil
         )
         onMapIdle?(viewProxy)
+    }
+
+    /// Called by MapLibre each time it draws a frame. `fullyRendered` is `false` while the frame still awaits data.
+    @MainActor
+    public func mapViewDidFinishRenderingFrame(_: MLNMapView, fullyRendered: Bool) {
+        onMapDidFinishRenderingFrame?(fullyRendered)
     }
 
     @MainActor
